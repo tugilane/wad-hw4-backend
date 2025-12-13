@@ -83,7 +83,9 @@ app.post('/auth/signup', async (req, res) => {
 
     return res
       .status(201)
+        .cookie('jwt', token, { maxAge: 6000000, httpOnly: true }) // remove this if you want cookie only created when logging in
       .json({ user_id: authUser.rows[0].id });
+      
   } catch (err) {
     console.error(err);
     return res.status(400).json({ error: err.message });
