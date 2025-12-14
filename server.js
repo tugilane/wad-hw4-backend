@@ -187,7 +187,7 @@ app.get("/api/posts/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-
+// put method to update a post
 app.put("/api/posts/:id", async (req, res) => {
   try {
     console.log("update post request arrived");
@@ -210,7 +210,7 @@ app.put("/api/posts/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+//Delete all
 app.delete("/api/posts", async (req, res) => {
   try {
     console.log("delete all posts request has arrived");
@@ -220,6 +220,23 @@ app.delete("/api/posts", async (req, res) => {
     console.error(err.message);
   }
 });
+//Delete by ID
+app.delete("/api/posts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query(
+      "DELETE FROM posttable WHERE id = $1",
+      [id]
+    );
+
+    res.status(204).end(); // success, no content
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 app.listen(port, () => {
   console.log("Server is listening to port " + port);
